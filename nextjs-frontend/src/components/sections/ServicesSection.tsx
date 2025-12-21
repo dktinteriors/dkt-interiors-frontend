@@ -9,7 +9,7 @@ import { Reveal } from '@/components/animations';
 import { useReducedMotion } from '@/hooks';
 import { SERVICES_DATA } from '@/lib/constants';
 import type { Service } from '@/types';
-import { Home, Building2, MessageCircle, Layout, ArrowRight } from 'lucide-react';
+import { Home, Building2, MessageCircle, Layout, ArrowRight, type LucideIcon } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -19,7 +19,7 @@ interface ServicesSectionProps {
   services?: Service[];
 }
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const iconMap: Record<string, LucideIcon> = {
   home: Home,
   building: Building2,
   'message-circle': MessageCircle,
