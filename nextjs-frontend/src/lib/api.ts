@@ -52,20 +52,25 @@ interface WPPortfolioRaw {
 
 const transformPortfolioItem = (raw: WPPortfolioRaw): PortfolioItem => {
   // Extract featured image from _embedded or featured_image_urls
-  let featured_image_urls = raw.featured_image_urls || {};
+  let featured_image_urls: PortfolioItem['featured_image_urls'] = raw.featured_image_urls || {};
   
   if (raw._embedded?.['wp:featuredmedia']?.[0]) {
     const media = raw._embedded['wp:featuredmedia'][0];
     const sizes = media.media_details?.sizes || {};
     
+    const buildImageObj = (size: { source_url: string; width: number; height: number } | undefined) => {
+      if (!size) return undefined;
+      return { url: size.source_url, width: size.width, height: size.height };
+    };
+
     featured_image_urls = {
       alt: media.alt_text || '',
-      full: { url: media.source_url, width: 0, height: 0 },
-      large: sizes.large ? { url: sizes.large.source_url, width: sizes.large.width, height: sizes.large.height } : undefined,
-      medium: sizes.medium ? { url: sizes.medium.source_url, width: sizes.medium.width, height: sizes.medium.height } : undefined,
-      thumbnail: sizes.thumbnail ? { url: sizes.thumbnail.source_url, width: sizes.thumbnail.width, height: sizes.thumbnail.height } : undefined,
-      'portfolio-large': sizes['portfolio-large'] ? { url: sizes['portfolio-large'].source_url, width: sizes['portfolio-large'].width, height: sizes['portfolio-large'].height } : undefined,
-      'portfolio-thumb': sizes['portfolio-thumb'] ? { url: sizes['portfolio-thumb'].source_url, width: sizes['portfolio-thumb'].width, height: sizes['portfolio-thumb'].height } : undefined,
+      full: { url: media.source_url, width: 0, height: 0, id: 0, alt: '' },
+      large: buildImageObj(sizes.large),
+      medium: buildImageObj(sizes.medium),
+      thumbnail: buildImageObj(sizes.thumbnail),
+      'portfolio-large': buildImageObj(sizes['portfolio-large']),
+      'portfolio-thumb': buildImageObj(sizes['portfolio-thumb']),
     };
   }
 
