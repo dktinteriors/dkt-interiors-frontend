@@ -57,15 +57,16 @@ const transformPortfolioItem = (raw: WPPortfolioRaw): PortfolioItem => {
   if (raw._embedded?.['wp:featuredmedia']?.[0]) {
     const media = raw._embedded['wp:featuredmedia'][0];
     const sizes = media.media_details?.sizes || {};
+    const altText = media.alt_text || '';
     
-    const buildImageObj = (size: { source_url: string; width: number; height: number } | undefined) => {
+    const buildImageObj = (size: { source_url: string; width: number; height: number } | undefined): { id: number; url: string; alt: string; width: number; height: number } | undefined => {
       if (!size) return undefined;
-      return { url: size.source_url, width: size.width, height: size.height };
+      return { id: 0, url: size.source_url, alt: altText, width: size.width, height: size.height };
     };
 
     featured_image_urls = {
-      alt: media.alt_text || '',
-      full: { url: media.source_url, width: 0, height: 0, id: 0, alt: '' },
+      alt: altText,
+      full: { id: 0, url: media.source_url, alt: altText, width: 0, height: 0 },
       large: buildImageObj(sizes.large),
       medium: buildImageObj(sizes.medium),
       thumbnail: buildImageObj(sizes.thumbnail),
