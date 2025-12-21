@@ -198,7 +198,6 @@ type TextRevealType = 'words' | 'chars' | 'lines';
 interface TextRevealProps extends BaseAnimationProps {
   type?: TextRevealType;
   text: string;
-  tag?: keyof JSX.IntrinsicElements;
 }
 
 export const TextReveal = ({
@@ -207,9 +206,8 @@ export const TextReveal = ({
   delay = 0,
   duration = ANIMATION.duration.fast,
   type = 'words',
-  tag: Tag = 'p',
 }: TextRevealProps) => {
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -270,17 +268,17 @@ export const TextReveal = ({
   };
 
   if (prefersReducedMotion) {
-    return <Tag className={className}>{text}</Tag>;
+    return <div className={className}>{text}</div>;
   }
 
   return (
-    <Tag
-      ref={containerRef as React.RefObject<HTMLElement>}
+    <div
+      ref={containerRef}
       className={className}
       style={{ perspective: '1000px' }}
     >
       {renderContent()}
-    </Tag>
+    </div>
   );
 };
 
