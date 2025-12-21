@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { NAV_LINKS, CONTACT_INFO, SOCIAL_LINKS, SERVICES_DATA } from '@/lib/constants';
 import { formatPhoneLink } from '@/lib/utils';
 import { Reveal } from '@/components/animations';
-import { Instagram, Facebook, Linkedin } from 'lucide-react';
+import { Instagram, Facebook, Linkedin, type LucideIcon } from 'lucide-react';
 
-const socialIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const socialIcons: Record<string, LucideIcon> = {
   instagram: Instagram,
   facebook: Facebook,
   linkedin: Linkedin,
