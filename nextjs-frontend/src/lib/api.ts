@@ -90,9 +90,9 @@ const transformPortfolioItem = (raw: WPPortfolioRaw): PortfolioItem => {
   return {
     id: raw.id,
     slug: raw.slug,
-    title: raw.title?.rendered || raw.title || '',
-    content: raw.content?.rendered || raw.content || '',
-    excerpt: raw.excerpt?.rendered || raw.excerpt || '',
+    title: raw.title?.rendered || '',
+    content: raw.content?.rendered || '',
+    excerpt: raw.excerpt?.rendered || '',
     date: raw.date,
     modified: raw.modified,
     featured_image_urls: featured_image_urls as PortfolioItem['featured_image_urls'],
