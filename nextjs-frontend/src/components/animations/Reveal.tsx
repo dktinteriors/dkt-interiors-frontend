@@ -824,7 +824,7 @@ export const FadeSlide = ({
 
 interface SplitRevealProps extends BaseAnimationProps {
   text: string;
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span';
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span' | 'div';
 }
 
 export const SplitReveal = ({
