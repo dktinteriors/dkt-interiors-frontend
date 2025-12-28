@@ -409,7 +409,7 @@ export const ContactSection = ({
                     label="Phone"
                     name="phone"
                     type="tel"
-                    value={formData.phone}
+                    value={formData.phone || ''}
                     onChange={handleInputChange}
                     onFocus={() => handleFocus('phone')}
                     onBlur={handleBlur}
@@ -428,7 +428,7 @@ export const ContactSection = ({
                     <select
                       id="project_type"
                       name="project_type"
-                      value={formData.project_type}
+                      value={formData.project_type || ''}
                       onChange={handleInputChange}
                       onFocus={() => handleFocus('project_type')}
                       onBlur={handleBlur}
