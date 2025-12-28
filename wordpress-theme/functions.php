@@ -418,9 +418,12 @@ add_action('rest_api_init', 'dkt_register_rest_routes');
 // ============================================
 
 function dkt_get_homepage_data() {
+    // Create a mock REST request to get portfolio as REST response
+    $portfolio_request = new WP_REST_Request('GET', '/dkt/v1/featured-portfolio');
+    
     return array(
         'settings' => dkt_get_settings()->get_data(),
-        'featured_portfolio' => dkt_get_featured_portfolio()->get_data(),
+        'featured_portfolio' => dkt_get_featured_portfolio($portfolio_request)->get_data(),
         'services' => dkt_get_services()->get_data(),
         'testimonials' => dkt_get_testimonials()->get_data(),
     );
@@ -447,16 +450,19 @@ function dkt_get_settings() {
 }
 
 function dkt_get_featured_portfolio($request = null) {
-    // Handle both REST API requests and direct function calls
+    // Determine the limit
     if (is_object($request) && method_exists($request, 'get_param')) {
         // Called from REST API
         $limit = $request->get_param('limit');
+        $is_rest_request = true;
     } elseif (is_numeric($request)) {
         // Called directly with a number (e.g., from index.php)
         $limit = intval($request);
+        $is_rest_request = false;
     } else {
-        // Default
+        // Default - assume template call
         $limit = 6;
+        $is_rest_request = false;
     }
     $limit = $limit ? intval($limit) : 6;
     
@@ -475,6 +481,13 @@ function dkt_get_featured_portfolio($request = null) {
     );
     
     $query = new WP_Query($args);
+    
+    // If called from template (index.php), return WP_Query object
+    if (!$is_rest_request) {
+        return $query;
+    }
+    
+    // If called from REST API, return formatted response
     $items = array();
     
     while ($query->have_posts()) {
