@@ -180,11 +180,20 @@ export const ContactSection = ({
     if (!validateForm()) {
       // Shake form on error
       if (formRef.current && !prefersReducedMotion) {
-        gsap.to(formRef.current, {
-          x: [-10, 10, -10, 10, 0],
-          duration: 0.4,
-          ease: 'power2.out',
-        });
+        gsap.fromTo(
+          formRef.current,
+          { x: 0 },
+          {
+            keyframes: [
+              { x: -10, duration: 0.1 },
+              { x: 10, duration: 0.1 },
+              { x: -10, duration: 0.1 },
+              { x: 10, duration: 0.1 },
+              { x: 0, duration: 0.1 },
+            ],
+            ease: 'power2.out',
+          }
+        );
       }
       return;
     }
