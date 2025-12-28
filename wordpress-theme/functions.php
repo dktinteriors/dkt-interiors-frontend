@@ -447,7 +447,17 @@ function dkt_get_settings() {
 }
 
 function dkt_get_featured_portfolio($request = null) {
-    $limit = $request ? $request->get_param('limit') : 6;
+    // Handle both REST API requests and direct function calls
+    if (is_object($request) && method_exists($request, 'get_param')) {
+        // Called from REST API
+        $limit = $request->get_param('limit');
+    } elseif (is_numeric($request)) {
+        // Called directly with a number (e.g., from index.php)
+        $limit = intval($request);
+    } else {
+        // Default
+        $limit = 6;
+    }
     $limit = $limit ? intval($limit) : 6;
     
     $args = array(
